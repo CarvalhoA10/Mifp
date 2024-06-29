@@ -1,6 +1,6 @@
 <?php
 
-require_once 'src/routes.php';
+require_once 'src/app/routes.php';
 
 session_start();
 
