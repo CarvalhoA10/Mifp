@@ -1,4 +1,4 @@
-## Mifh (Em desenvolvimento)
+## Mifp (Em desenvolvimento)
 
 Um simples projeto para acelerar o desenvolvimento de aplicações web de pequeno porte utlizando php puro.
 
