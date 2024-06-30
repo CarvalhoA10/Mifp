@@ -1,12 +1,14 @@
 ## Mifp (Em desenvolvimento)
 
-Um simples projeto para acelerar o desenvolvimento de aplicações web de pequeno porte utlizando php puro.
+Um simples projeto para acelerar o desenvolvimento de aplicações web de pequeno porte utlizando php puro e sql.
+
+OBS: É um projeto pessoal mas se querer utilizar fique a vontade.
 
 ### Recursos
 
 - [x] Sistemas de template
-- [ ] Conexão com banco de dados(PDO)
-- [ ] Tabela básica de usuário
+- [x] Conexão com banco de dados(PDO)
+- [x] Tabela básica de usuário
 - [ ] Login básico
 
 ### Como utilizar

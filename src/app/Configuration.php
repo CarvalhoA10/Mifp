@@ -4,10 +4,12 @@ class Configuration
 {
 
     private $DATABASE = "mysql";
-    private $DB_URL = "";
-    private $DB_NAME = "";
-    private $DB_USERNAME = "";
-    private $DB_PASSWORD = "";
+    private $DB_URL = "localhost";
+    private $DB_NAME = "test";
+    private $DB_USERNAME = "root";
+    private $DB_PASSWORD = "12345";
+
+    private $migrations = ["UserMigration"];
 
     public function get_database()
     {
@@ -22,5 +24,10 @@ class Configuration
     public function get_dbpassword()
     {
         return $this->DB_PASSWORD;
+    }
+
+    public function get_migrations()
+    {
+        return $this->migrations;
     }
 }

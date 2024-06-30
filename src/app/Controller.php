@@ -13,4 +13,9 @@ class Controller
         echo $content;
     }
 
+    public function response($data)
+    {
+        echo json_encode($data);
+    }
+
 }

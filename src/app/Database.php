@@ -1,15 +1,15 @@
 <?php
 
-require './src/app/Configuration.php';
+require_once './src/app/Configuration.php';
 
-class DATABASE
+class Database
 {
 
-    private $connection;
+    private $configuration;
 
     public function __construct()
     {
-        $this->connection = new Configuration;
+        $this->configuration = new Configuration;
     }
 
     public function connection()
@@ -17,8 +17,7 @@ class DATABASE
 
         try
         {
-            $conn = new PDO($this->connection->get_database(), $this->connection->get_dbusername(), $this->connection->get_dbpassword());
-
+            $conn = new PDO($this->configuration->get_database(), $this->configuration->get_dbusername(), $this->configuration->get_dbpassword());
             return $conn;
         }
         catch(PDOException $ex)
@@ -27,8 +26,13 @@ class DATABASE
         }
     }
 
-    private function execute_migrations()
+    public function execute_migrations()
     {
+        foreach($this->configuration->get_migrations() as $migration)
+        {
+            require_once './src/migrations/'.$migration.'.php';
 
+            new $migration;
+        }
     }
 }
