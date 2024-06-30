@@ -9,10 +9,12 @@ class Routes
             'get' => [
                 '/' => fn() => self::execute_controller("HomeController", "home"),
                 '/about' => fn() => self::execute_controller("HomeController", "about"),
+                '/login' => fn() => self::execute_controller("AuthController", "login"),
+                "/register" => fn() => self::execute_controller("AuthController", "register")
             ],
             'post' => [
-                '/register' => fn() => self::execute_controller("AuthController", "register"),
-                '/login' => fn() => self::execute_controller("AuthController", "login"),
+                '/register/save' => fn() => self::execute_controller("AuthController", "save"),
+                '/login/auth' => fn() => self::execute_controller("AuthController", "authenticate"),
             ]
         ];
     }
