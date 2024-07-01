@@ -1,6 +1,8 @@
 <?php
 
-class AuthController
+require_once './src/app/Controller.php';
+
+class AuthController extends Controller
 {
 
     public function __construct()
@@ -11,9 +13,7 @@ class AuthController
     public function register()
     {
 
-        $username = htmlspecialchars($_POST['username']);
-        $email = htmlspecialchars($_POST['email']);
-        $password = htmlspecialchars($_POST['password']);
+        return $this->view("auth/register", "Registrar");
 
     }
 }

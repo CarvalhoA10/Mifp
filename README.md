@@ -1,6 +1,6 @@
 # Mifp (Em desenvolvimento)
 
-Um simples projeto para acelerar o desenvolvimento de aplicações web de pequeno porte utlizando php puro e sql.
+Um simples projeto para acelerar o desenvolvimento de aplicações web de pequeno porte utlizando php puro e sql. O objetivo desse projeto não é automatizar o processo de criação de um backend e sim facilitar a criação utilizando o php, ou sejá não vai ter um recurso de model que automaticamente vai criar o sql e fazer migração então quem for utilizar terá que conhecer sql e a base do php orientado a objetos.
 
 OBS: É um projeto pessoal mas se querer utilizar fique a vontade.
 
@@ -16,35 +16,45 @@ OBS: É um projeto pessoal mas se querer utilizar fique a vontade.
 
 ## Como utilizar
 
+### Configurações
+
+O Arquivo Configuration.php é onde se encontra todas as variáveis de configurações como conexão com banco de dados, email, migrações e etc
+
+    ```php
+
+        private $DATABASE = "mysql";
+        private $DB_URL = "localhost";
+        private $DB_NAME = "test";
+        private $DB_USERNAME = "root";
+        private $DB_PASSWORD = "12345";
+
+        private $migrations = ["UserMigration"];
+    ```
+
 ### Rotas
 
 * No arquivo src/app/Routes.php existe um metodo chamado routes onde será colocado a rota seguindo o padrão:
     ```php
-        'get' => [
-                '/' => fn() => self::execute_controller("HomeController", "home"),
-                '/about' => fn() => self::execute_controller("HomeController", "about"),
-            ],
-        'post' => [
-                '/login' => fn() => self::execute_controller("AuthController", "login"),
-            ]
+        public static function routes()
+        {
+            return [
+                'get' => [
+                    '/' => fn() => self::execute_controller("HomeController", "home"),
+                    '/about' => fn() => self::execute_controller("HomeController", "about"),
+                    '/login' => fn() => self::execute_controller("AuthController", "login"),
+                    "/register" => fn() => self::execute_controller("AuthController", "register")
+                ],
+                'post' => [
+                    '/register/save' => fn() => self::execute_controller("AuthController", "save"),
+                    '/login/auth' => fn() => self::execute_controller("AuthController", "authenticate"),
+                ]
+            ];
+        }
     ```
 
     O primeiro parametro é o nome do controller e o segundo é o nome do metodo.
 
 * É recomendado que o controller tenha o nome padronizado como por exemplo "ExemploController"
-* Os controllers deve herdar de Controller para que possa ter acesso ao template utilizando o metodo view:
-    ```php
-        class HomeController extends Controller
-        {
-            public function home()
-            {
-
-                return $this->view("public/home", "home");
-            }
-        }
-    ```
-
-* Os arquivos de view são colocados em /views alem de possuir o arquivo template.php onde poderá ser utilizado se todas as páginas tiverem template unico.
 
 ### Controllers
 
@@ -76,4 +86,73 @@ OBS: É um projeto pessoal mas se querer utilizar fique a vontade.
 
     ```
 
+    O metodo view() recebe 3 parametros:
+    - Nome da view
+    - Titulo da pagina
+    - Dados caso queira mandar para a view
+
     No controller poderá ser chamados outras classes como Database, Email, Security e etc.
+
+### Migrações
+
+A pasta migrations é onde será feita as classes responsáveis que tambem é uma classe comum php so que seus metodos são chamados no proprio construtor.
+
+    ```php
+        require_once './src/app/Database.php';
+
+        class UserMigration
+        {
+            // responsavel pela conexão com banco de dados
+            private $database;
+
+            public function __construct()
+            {
+                // Instanciando um objeto da classe responsavel pela comunicação com banco de dados
+                $this->database = new Database;
+
+                //Chamando o metodo responsavel pela criação da tabela
+                $this->create_user_table();
+            }
+
+            // Metodo responsavel por criar a tabela
+            public function create_user_table()
+            {
+
+                $conn = $this->database->connection();
+                $sql = "
+                
+                    CREATE TABLE IF NOT EXISTS users(
+                    
+                        id INT PRIMARY KEY AUTO_INCREMENT,
+                        username VARCHAR(30) UNIQUE NOT NULL,
+                        email VARCHAR(150) UNIQUE NOT NULL,
+                        password VARCHAR(150) NOT NULL,
+                        isActive INT,
+                        role INT,
+                        joinedDate DateTime,
+                        lastUpdate DateTIme
+
+                    );
+                
+                ";
+
+                $prep = $conn->prepare($sql);
+                $prep->execute();
+            }
+
+        }
+
+    ```
+
+    No final basta abrir o arquivo Configuration.php que está na pasta src/app/ do projeto e adicionar a migration a lista.
+
+
+        ```php
+            private $migrations = ["UserMigration", "MinhaMigration"];
+        ```
+
+    Por fim é só chamar o arquivo migrate.php que está na pasta raiz do projeto utilizando o php.
+
+        ```bash
+            php migrate.php
+        ```
