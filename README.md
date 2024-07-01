@@ -95,7 +95,7 @@ O Arquivo Configuration.php é onde se encontra todas as variáveis de configura
 
 ### Migrações
 
-A pasta migrations é onde será feita as classes responsáveis que tambem é uma classe comum php so que seus metodos são chamados no proprio construtor.
+* A pasta migrations é onde será feita as classes responsáveis que tambem é uma classe comum php so que seus metodos são chamados no proprio construtor.
 
     ```php
         require_once './src/app/Database.php';
@@ -144,14 +144,14 @@ A pasta migrations é onde será feita as classes responsáveis que tambem é um
 
     ```
 
-No final basta abrir o arquivo Configuration.php que está na pasta src/app/ do projeto e adicionar a migration a lista.
+* No final basta abrir o arquivo Configuration.php que está na pasta src/app/ do projeto e adicionar a migration a lista.
 
 
     ```php
         private $migrations = ["UserMigration", "MinhaMigration"];
     ```
 
-Por fim é só chamar o arquivo migrate.php que está na pasta raiz do projeto utilizando o php.
+* Por fim é só chamar o arquivo migrate.php que está na pasta raiz do projeto utilizando o php.
 
     ```bash
         php migrate.php
