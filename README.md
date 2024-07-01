@@ -147,12 +147,12 @@ A pasta migrations é onde será feita as classes responsáveis que tambem é um
     No final basta abrir o arquivo Configuration.php que está na pasta src/app/ do projeto e adicionar a migration a lista.
 
 
-        ```php
-            private $migrations = ["UserMigration", "MinhaMigration"];
-        ```
+    ```php
+        private $migrations = ["UserMigration", "MinhaMigration"];
+    ```
 
     Por fim é só chamar o arquivo migrate.php que está na pasta raiz do projeto utilizando o php.
 
-        ```bash
-            php migrate.php
-        ```
+    ```bash
+        php migrate.php
+    ```
