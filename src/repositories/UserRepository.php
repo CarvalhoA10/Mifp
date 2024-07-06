@@ -78,22 +78,32 @@ class UserRepository
         return $prep->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function update($id, $username, $email, $password)
+    public function update($id, $username, $email)
     {
         $conn = $this->database->connection();
 
-        $sql = "UPDATE user SET username = $username, email = $email, password = $password WHERE id = $id;";
+        $sql = "UPDATE user SET username = :username, email = :email WHERE id = :id;";
 
         $now = new DateTime();
 
         $prep = $conn->prepare($sql);
+        $prep->bindValue(':id', $id);
         $prep->bindValue(':username', $username);
         $prep->bindValue(':email', $email);
-        $prep->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
-        $prep->bindValue(':isActive', false, PDO::PARAM_BOOL);
-        $prep->bindValue(':role', Role::basic);
         $prep->bindValue(':lastUpdate', $now->format('Y-m-d H:i:s'));
 
+        $prep->execute();
+    }
+
+    public function delete($id)
+    {
+        $conn = $this->database->connection();
+
+        $sql = "DELETE * from users WHERE id = :id;";
+
+        $prep = $conn->prepare($sql);
+        $prep->bindValue(':id', $id);
+        
         $prep->execute();
     }
 }
